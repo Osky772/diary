@@ -21,7 +21,7 @@ body {
    padding: 2em;
 }
 
-*:not(html):not(body):not(.wrapper) {
+*:not(html):not(body):not(.no-style-wrapper):not(#app) {
    font-family: 'Handwritten', cursive;
    font-size: 1.25rem;
 	background: transparent;
@@ -54,10 +54,10 @@ img, video, iframe {
 
 /* Rotations */
 
-*:nth-child(odd):not(body):not(html):not(.wrapper){
+*:nth-child(odd):not(body):not(html):not(.no-style-wrapper):not(#app){
  transform: rotate(.5deg);
 }
-*:nth-child(even):not(body):not(html):not(.wrapper){
+*:nth-child(even):not(body):not(html):not(.no-style-wrapper):not(#app){
    transform: rotate(-.5deg);
 }
 

@@ -1,18 +1,17 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div id="c-app">
+    <nav class="no-style-wrapper">
+      <router-link to="/">Pamiętnik</router-link>
+      <router-link to="/about">Dodaj kartkę</router-link>
+    </nav>
+    <router-view/>
+  </div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+#c-app#c-app {
+  width: 700px;
+  margin: 0 auto;
 }
 
 nav {
