@@ -6,7 +6,7 @@
   font-family: Mono;
   src: url(Jackwrite.woff2);
 }
-pre, code {
+.paper-css pre, code {
    font-family: Mono !important;
 }
 html, body {
@@ -21,7 +21,7 @@ body {
    padding: 2em;
 }
 
-*:not(html):not(body):not(.no-style-wrapper):not(#app) {
+.paper-css *:not(html):not(body):not(.no-style-wrapper):not(#app) {
    font-family: 'Handwritten', cursive;
    font-size: 1.25rem;
 	background: transparent;
@@ -39,12 +39,12 @@ body {
 }
 
 /* Media */
-img, video, iframe {
+.paper-css img, video, iframe {
    padding: 0 !important;
    margin: 0 !important;
 }
 
-::cue {
+.paper-css ::cue {
   color: #d9e365;
   background-color: rgba(0, 0, 0, 0.7);
   font-family: "Mono";
@@ -54,14 +54,14 @@ img, video, iframe {
 
 /* Rotations */
 
-*:nth-child(odd):not(body):not(html):not(.no-style-wrapper):not(#app){
+.paper-css *:nth-child(odd):not(body):not(html):not(.no-style-wrapper):not(#app){
  transform: rotate(.5deg);
 }
-*:nth-child(even):not(body):not(html):not(.no-style-wrapper):not(#app){
+.paper-css *:nth-child(even):not(body):not(html):not(.no-style-wrapper):not(#app){
    transform: rotate(-.5deg);
 }
 
-hr {
+.paper-css hr {
    width: 50% !important;
    padding: 0 !important;
    margin-left: auto !important;
@@ -69,37 +69,37 @@ hr {
    border: dotted gray .1rem !important;
 }
 
-h1 {
+.paper-css h1 {
    font-size: 2rem !important;
 }
-h2 {
+.paper-css h2 {
    font-size: 1.75rem !important;
 }
-h3 {
+.paper-css h3 {
    font-size: 1.5rem !important;
 }
-h4 {
+.paper-css h4 {
    font-size: 1.25rem !important;
 }
-h5 {
+.paper-css h5 {
    font-size: 1.15rem !important;
 }
-h6 {
+.paper-css h6 {
    font-size: 1.05rem !important;
 }
 
-button, input[type="button"], input[type="reset"], input[type="submit"] {
+.paper-css button, input[type="button"], input[type="reset"], input[type="submit"] {
    box-shadow: #8080803d .5rem .5em !important;
 }
 
-ol {
+.paper-css ol {
    list-style-type: lower-roman;
    list-style-position: inside;
 }
-ul {
+.paper-css ul {
    list-style-type: square;
    list-style-position: inside;
 }
-select {
+.paper-css select {
    overflow: auto !important;
 }

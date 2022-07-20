@@ -2,7 +2,7 @@
   <div id="c-app">
     <nav class="no-style-wrapper">
       <router-link to="/">Pamiętnik</router-link>
-      <router-link to="/about">Dodaj kartkę</router-link>
+      <router-link to="/dodaj-kartke">Dodaj kartkę</router-link>
     </nav>
     <router-view/>
   </div>
