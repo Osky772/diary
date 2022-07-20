@@ -38,9 +38,9 @@ body {
 	border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
 	box-sizing: border-box;
 	border: solid 0.1em #4140344E;
-   width:fit-content;
-   max-width: 99%;
-   overflow: hidden;
+  width:fit-content;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 /* Media */
@@ -94,7 +94,8 @@ body {
 }
 
 .paper-css button, input[type="button"], input[type="reset"], input[type="submit"] {
-   box-shadow: #8080803d .5rem .5em !important;
+  box-shadow: #8080803d .5rem .5em !important;
+  cursor: pointer;
 }
 
 .paper-css ol {
