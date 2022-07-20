@@ -16,6 +16,7 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     'import/first': 'off',
+    'import/prefer-default-export': 'off',
   },
   ignorePatterns: ['ckeditor5'],
   overrides: [

@@ -1,9 +1,4 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
 
 const prodConfig = {
   apiKey: 'AIzaSyAO4CN9aOUaASb2X3s9e0EeUMludXWu6P8',
@@ -24,8 +19,6 @@ const devConfig = {
 };
 
 const firebaseConfig = process.env.NODE_ENV === 'production' ? prodConfig : devConfig;
-console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-console.log('firebaseConfig', firebaseConfig);
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
