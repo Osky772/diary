@@ -21,7 +21,12 @@ body {
    padding: 2em;
 }
 
-.paper-css *:not(html):not(body):not(.no-style-wrapper):not(#app) {
+.paper-css-container {
+  width: 700px;
+  margin: 0 auto;
+}
+
+.paper-css *:not(html):not(body):not(.no-style):not(#app) {
    font-family: 'Handwritten', cursive;
    font-size: 1.25rem;
 	background: transparent;
