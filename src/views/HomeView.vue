@@ -11,6 +11,7 @@
       v-for="(post, id) in posts"
       v-html="post.html"
       class="post-list-item"
+      @click="$emit('post-clicked', post)"
     >
     </div>
 
