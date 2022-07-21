@@ -16,6 +16,7 @@
     "firebase": "^9.9.0",
     "register-service-worker": "^1.7.2",
     "vue": "^3.2.13",
+    "vue-query": "^1.25.2",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {

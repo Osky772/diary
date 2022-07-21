@@ -3,6 +3,9 @@
    id="homeview"
     class="paper-css paper-css-container no-style posts-list"
   >
+    <h1 v-if="isLoading">Ładuję kartki...</h1>
+    <h1 v-if="isError" style="color: red;">Błąd ładowania :(</h1>
+
     <div
       :key="id"
       v-for="(post, id) in posts"
@@ -15,9 +18,15 @@
 </template>
 
 <script lang="ts" setup>
+import { useQuery } from 'vue-query';
 import { getPosts } from '@/backend/db';
 
-const posts = await getPosts();
+function usePostsQuery() {
+  return useQuery('posts', getPosts);
+}
+const {
+  isLoading, isError, data: posts,
+} = usePostsQuery();
 
 </script>
 

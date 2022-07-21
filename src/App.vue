@@ -23,7 +23,10 @@ import {
   getAuth, signOut, User, updateProfile,
 } from 'firebase/auth';
 import { ref } from 'vue';
+import { useQueryProvider } from 'vue-query';
 import SignIn from './components/SignIn.vue';
+
+useQueryProvider();
 
 const auth = getAuth();
 const isUserLogged = ref(false);
