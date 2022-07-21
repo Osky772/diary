@@ -7,22 +7,38 @@
         <button @click.prevent="handleSignOut">Wyloguj się</button>
       </nav>
     </div>
-    <router-view/>
+
+    <router-view :user="user"/>
   </div>
 
   <SignIn v-else @onLogged="handleOnLogged" />
 </template>
 
 <script lang="ts" setup>
-import { getAuth, signOut } from 'firebase/auth';
+import {
+  getAuth, signOut, User, updateProfile,
+} from 'firebase/auth';
 import { ref } from 'vue';
 import SignIn from './components/SignIn.vue';
 
 const auth = getAuth();
-const isUserLogged = ref(auth.currentUser ?? false);
+const isUserLogged = ref(false);
+const user = ref<User | null>(null);
 
-function handleOnLogged(user: any) {
-  isUserLogged.value = !!user.userCredential;
+auth.onAuthStateChanged((firebaseUser) => {
+  if (firebaseUser) {
+    isUserLogged.value = true;
+    user.value = firebaseUser;
+
+    // TODO: update user profile
+    // updateProfile(firebaseUser, {
+    //   displayName: '',
+    // });
+  }
+});
+
+function handleOnLogged(userCredential: any) {
+  isUserLogged.value = !!userCredential.userCredential;
 }
 
 function handleSignOut() {

@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
 const prodConfig = {
   apiKey: 'AIzaSyAO4CN9aOUaASb2X3s9e0EeUMludXWu6P8',
@@ -22,3 +23,5 @@ const firebaseConfig = process.env.NODE_ENV === 'production' ? prodConfig : devC
 
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
+// Initialize Firestore
+export const db = getFirestore(app);

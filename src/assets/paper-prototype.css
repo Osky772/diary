@@ -26,6 +26,10 @@ body {
   margin: 0 auto;
 }
 
+.paper-css.preview div {
+  width: 100% !important;
+}
+
 .paper-css *:not(html):not(body):not(.no-style):not(#app) {
    font-family: 'Handwritten', cursive;
    font-size: 1.25rem;

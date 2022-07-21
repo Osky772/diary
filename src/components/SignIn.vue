@@ -32,7 +32,6 @@ const auth = getAuth(app);
 function handleSubmit() {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((userCredential) => {
-      // const { user } = userCredential;
       emit('onLogged', { userCredential });
       invalid.value = false;
     })

@@ -17,6 +17,7 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     'import/first': 'off',
     'import/prefer-default-export': 'off',
+    'no-use-before-define': 'off',
   },
   ignorePatterns: ['ckeditor5'],
   overrides: [

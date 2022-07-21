@@ -8,8 +8,15 @@
       <ckeditor :editor="editor" v-model="editorData"></ckeditor>
     </div>
 
-    <div class="preview paper-css" v-html="editorData">
+    <div class="preview paper-css">
+      <div v-html="editorData"></div>
     </div>
+  </div>
+
+  <div class="send-btn-wrapper paper-css paper-css-container">
+    <button @click="handleSendPost">
+      {{ isLoading ? 'Leci...' : 'Wyślij kartkę'}}
+    </button>
   </div>
 </template>
 
@@ -18,21 +25,52 @@
 import CKEditor from '@ckeditor/ckeditor5-vue';
 // @ts-ignore
 import Editor from 'ckeditor5-custom-build/build/ckeditor';
+import { addPost } from '@/backend/db';
+import { PropType, ref } from 'vue';
+import { User } from 'firebase/auth';
+
+interface Props {
+  user: User | null;
+}
 
 export default {
+  props: {
+    user: {
+      type: Object as PropType<User>,
+      required: true,
+    },
+  },
   components: {
     ckeditor: CKEditor.component,
   },
-  data() {
+  setup(props: Props) {
+    const editor = Editor;
+    const editorData = ref('');
+    const isLoading = ref(false);
+
+    async function handleSendPost() {
+      isLoading.value = true;
+      await addPost({
+        html: editorData.value,
+        name: props.user?.displayName ?? '',
+        createdAt: new Date(),
+      });
+      isLoading.value = false;
+    }
+
     return {
-      editor: Editor,
-      editorData: '',
+      editor,
+      editorData,
+      handleSendPost,
+      isLoading,
     };
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/paper-prototype.css";
+
 .editor-container {
   display: grid;
   grid-auto-flow: column;
