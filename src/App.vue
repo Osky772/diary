@@ -8,7 +8,11 @@
       </nav>
     </div>
 
-    <router-view :user="user"/>
+    <Suspense>
+      <router-view :user="user"/>
+
+      <template #fallback>Loading...</template>
+    </Suspense>
   </div>
 
   <SignIn v-else @onLogged="handleOnLogged" />

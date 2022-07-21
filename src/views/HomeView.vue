@@ -1,18 +1,16 @@
 <template>
   <div class="paper-css paper-css-container  no-style">
-    <h1>Dzisiaj było super</h1>
+    <div :key="id" v-for="(post, id) in posts" v-html="post.html">
+    </div>
 
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script lang="ts" setup>
+import { getPosts } from '@/backend/db';
 
-export default defineComponent({
-  name: 'HomeView',
-  components: {
-  },
-});
+const posts = await getPosts();
+
 </script>
 
 <style lang="scss" scoped>

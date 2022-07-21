@@ -1,4 +1,4 @@
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { db } from '@/backend/init';
 
 interface PostEntry {
@@ -9,6 +9,7 @@ interface PostEntry {
 
 export {
   addPost,
+  getPosts,
 };
 
 async function addPost(post: PostEntry) {
@@ -17,5 +18,15 @@ async function addPost(post: PostEntry) {
     console.log('Document written with ID: ', docRef.id);
   } catch (e) {
     console.error('Error adding document: ', e);
+  }
+}
+
+async function getPosts() {
+  try {
+    const querySnapshot = await getDocs(collection(db, 'posts'));
+    return querySnapshot.docs.map((doc) => doc.data() as PostEntry);
+  } catch (e) {
+    console.error('Error getting documents: ', e);
+    return null;
   }
 }
