@@ -79,7 +79,7 @@ export default {
       const post = await addPost({
         html: editorData.value,
         name: props.user?.displayName ?? '',
-        createdAt: new Date(),
+        createdAt: new Date().toString(),
       });
       isLoading.value = false;
 

@@ -1,6 +1,13 @@
 <template>
   <div id="single-post" class="paper-css paper-css-container">
-    <div class="post-content" v-html="post.html"></div>
+    <div class="post-content">
+      <p>
+        Dodane przez: {{ post.name }}
+        <br>
+        Dnia: {{ formatDate(post.createdAt) }}
+      </p>
+      <div class="no-style" v-html="post.html"></div>
+    </div>
 
     <button @click="handleEdit">Edytuj</button>
     <div class="confirmation-overlay no-style" v-show="isEditModalOpen">
@@ -30,6 +37,10 @@
 import { useRoute, useRouter } from 'vue-router';
 import { deleteSinglePost, getSinglePost, PostEntry } from '@/backend/db';
 import { ref } from 'vue';
+import dayjs from 'dayjs';
+import 'dayjs/locale/pl';
+
+dayjs.locale('pl');
 
 const post = ref<PostEntry | null>(null);
 const isDeleteModalOpen = ref(false);
@@ -37,6 +48,10 @@ const isEditModalOpen = ref(false);
 
 const route = useRoute();
 const router = useRouter();
+
+function formatDate(date: string) {
+  return dayjs(date).format('DD MMM YYYY HH:mm');
+}
 
 async function getPost(): Promise<PostEntry | null> {
   try {

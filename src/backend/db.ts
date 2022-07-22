@@ -10,7 +10,7 @@ export interface PostEntry extends PostEntryCreateNew {
 interface PostEntryCreateNew {
   html: string;
   name: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export {
