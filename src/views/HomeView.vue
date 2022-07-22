@@ -35,8 +35,6 @@ const {
 @import '../assets/paper-prototype.css';
 
 #homeview#homeview {
-  padding-top: 30px;
-
   .post-list-item {
     width: 100%;
     margin-bottom: 40px;

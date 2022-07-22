@@ -1,5 +1,11 @@
 <template>
-  <div v-if="isUserLogged">
+  <div v-if="AuthState.OnValidating">
+    <div class="paper-css paper-css-container">
+      <h1>Witam w pamiętniku</h1>
+    </div>
+  </div>
+
+  <div v-else-if="AuthState.LoggedIn">
     <div class="paper-css paper-css-container">
       <nav class="no-style">
         <router-link to="/">Pamiętnik</router-link>
@@ -22,7 +28,7 @@
     </Suspense>
   </div>
 
-  <SignIn v-else @onLogged="handleOnLogged" />
+  <SignIn v-else-if="AuthState.LoggedOut" @onLogged="handleSignIn" />
 </template>
 
 <script lang="ts" setup>
@@ -38,13 +44,19 @@ const router = useRouter();
 
 useQueryProvider();
 
+enum AuthState {
+  OnValidating,
+  LoggedOut,
+  LoggedIn,
+}
+
 const auth = getAuth();
-const isUserLogged = ref(false);
+const isUserLogged = ref(AuthState.OnValidating);
 const user = ref<User | null>(null);
 
 auth.onAuthStateChanged((firebaseUser) => {
   if (firebaseUser) {
-    isUserLogged.value = true;
+    isUserLogged.value = AuthState.LoggedIn;
     user.value = firebaseUser;
 
     // TODO: update user profile
@@ -53,10 +65,6 @@ auth.onAuthStateChanged((firebaseUser) => {
     // });
   }
 });
-
-function handleOnLogged(userCredential: any) {
-  isUserLogged.value = !!userCredential.userCredential;
-}
 
 function handlePostClicked(post: any) {
   console.log(post);
@@ -69,15 +77,21 @@ function handlePostClicked(post: any) {
   });
 }
 
+function handleSignIn(userCredential: any) {
+  isUserLogged.value = userCredential.userCredential ? AuthState.LoggedIn : AuthState.LoggedOut;
+}
+
 function handleSignOut() {
   signOut(auth);
-  isUserLogged.value = false;
+  isUserLogged.value = AuthState.LoggedOut;
 }
 
 </script>
 
 <style lang="scss">
 nav {
+  padding-bottom: 30px;
+
   a {
     font-weight: bold;
     color: #2c3e50;

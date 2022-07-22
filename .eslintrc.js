@@ -19,6 +19,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-use-before-define': 'off',
     'vuejs-accessibility/click-events-have-key-events': 'off',
+    'no-shadow': 'off',
   },
   ignorePatterns: ['ckeditor5'],
   overrides: [
