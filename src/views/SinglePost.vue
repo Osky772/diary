@@ -2,12 +2,25 @@
   <div id="single-post" class="paper-css paper-css-container">
     <div class="post-content" v-html="post.html"></div>
 
-    <button @click="isOpen = true">Usuń</button>
-    <div class="confirmation-overlay no-style" v-show="isOpen">
+    <button @click="handleEdit">Edytuj</button>
+    <div class="confirmation-overlay no-style" v-show="isEditModalOpen">
+      <div class="confirmation">
+        <h2>
+          Na pewno chcesz edytować kartkę?
+          <br>
+          Utracisz obecny stan edytora
+        </h2>
+        <button @click="editCurrentPost">Tak</button>
+        <button @click="isEditModalOpen = false">Nie</button>
+      </div>
+    </div>
+
+    <button @click="isDeleteModalOpen = true">Usuń</button>
+    <div class="confirmation-overlay no-style" v-show="isDeleteModalOpen">
       <div class="confirmation">
         <h2>Na pewno chcesz usunąć kartkę?</h2>
         <button @click="handleDelete">Tak</button>
-        <button @click="isOpen = false">Nie</button>
+        <button @click="isDeleteModalOpen = false">Nie</button>
       </div>
     </div>
   </div>
@@ -15,16 +28,17 @@
 
 <script lang="ts" setup>
 import { useRoute, useRouter } from 'vue-router';
-import { deleteSinglePost, getSinglePost } from '@/backend/db';
+import { deleteSinglePost, getSinglePost, PostEntry } from '@/backend/db';
 import { ref } from 'vue';
 
-const post = ref<string | null>(null);
-const isOpen = ref(false);
+const post = ref<PostEntry | null>(null);
+const isDeleteModalOpen = ref(false);
+const isEditModalOpen = ref(false);
 
 const route = useRoute();
 const router = useRouter();
 
-async function getPost() {
+async function getPost(): Promise<PostEntry | null> {
   try {
     if (isPostLoadedFromParams(route.params.post)) {
       return JSON.parse(route.params.post as string);
@@ -42,6 +56,22 @@ async function getPost() {
 async function handleDelete() {
   await deleteSinglePost(route.params.id as string);
   await router.push({ name: 'home' });
+}
+
+function handleEdit() {
+  if (localStorage.getItem('editorData')) {
+    isEditModalOpen.value = true;
+  } else {
+    editCurrentPost();
+  }
+}
+
+function editCurrentPost() {
+  if (post.value) {
+    localStorage.setItem('editorData', post.value.html);
+    isEditModalOpen.value = false;
+    router.push({ name: 'add-post', params: { id: route.params.id } });
+  }
 }
 
 function isPostLoadedFromParams(params: unknown): params is string {
