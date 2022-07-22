@@ -1,4 +1,6 @@
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import {
+  collection, addDoc, getDocs, getDoc, doc as firestoreDoc,
+} from 'firebase/firestore';
 import { db } from '@/backend/init';
 
 interface PostEntry extends PostEntryCreateNew {
@@ -14,6 +16,7 @@ interface PostEntryCreateNew {
 export {
   addPost,
   getPosts,
+  getSinglePost,
 };
 
 async function addPost(post: PostEntryCreateNew) {
@@ -32,6 +35,19 @@ async function getPosts(): Promise<PostEntry[] | null> {
       ...doc.data(),
       id: doc.id,
     }) as PostEntry);
+  } catch (e) {
+    console.error('Error getting documents: ', e);
+    return null;
+  }
+}
+
+async function getSinglePost(id: string): Promise<PostEntry | null> {
+  try {
+    const docRef = await getDoc(firestoreDoc(db, 'posts', id));
+    return {
+      ...docRef.data(),
+      id: docRef.id,
+    } as PostEntry;
   } catch (e) {
     console.error('Error getting documents: ', e);
     return null;

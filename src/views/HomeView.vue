@@ -1,6 +1,6 @@
 <template>
   <div
-   id="homeview"
+    id="homeview"
     class="paper-css paper-css-container no-style posts-list"
   >
     <h1 v-if="isLoading">Ładuję kartki...</h1>
