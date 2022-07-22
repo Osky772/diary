@@ -20,6 +20,7 @@ module.exports = {
     'no-use-before-define': 'off',
     'vuejs-accessibility/click-events-have-key-events': 'off',
     'no-shadow': 'off',
+    'no-undef': 'off',
   },
   ignorePatterns: ['ckeditor5'],
   overrides: [

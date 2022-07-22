@@ -11,7 +11,7 @@
       v-for="(post, id) in posts"
       v-html="post.html"
       class="post-list-item"
-      @click="$emit('post-clicked', post)"
+      @click="handlePostClick(post)"
     >
     </div>
 
@@ -20,7 +20,12 @@
 
 <script lang="ts" setup>
 import { useQuery } from 'vue-query';
-import { getPosts } from '@/backend/db';
+import { getPosts, PostEntry } from '@/backend/db';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+defineEmits(['post-clicked']);
 
 function usePostsQuery() {
   return useQuery('posts', getPosts);
@@ -28,6 +33,16 @@ function usePostsQuery() {
 const {
   isLoading, isError, data: posts,
 } = usePostsQuery();
+
+function handlePostClick(post: PostEntry) {
+  router.push({
+    name: 'kartka',
+    params: {
+      id: post.id,
+      post: JSON.stringify(post),
+    },
+  });
+}
 
 </script>
 

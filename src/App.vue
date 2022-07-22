@@ -15,10 +15,7 @@
     </div>
 
     <Suspense>
-      <router-view
-        :user="user"
-        @postClicked="handlePostClicked"
-      />
+      <router-view :user="user"/>
 
       <template #fallback>
         <div class="paper-css paper-css-container">
@@ -37,10 +34,7 @@ import {
 } from 'firebase/auth';
 import { ref } from 'vue';
 import { useQueryProvider } from 'vue-query';
-import { useRouter } from 'vue-router';
 import SignIn from './components/SignIn.vue';
-
-const router = useRouter();
 
 useQueryProvider();
 
@@ -65,17 +59,6 @@ auth.onAuthStateChanged((firebaseUser) => {
     // });
   }
 });
-
-function handlePostClicked(post: any) {
-  console.log(post);
-  router.push({
-    name: 'kartka',
-    params: {
-      id: post.id,
-      post: JSON.stringify(post),
-    },
-  });
-}
 
 function handleSignIn(userCredential: any) {
   isUserLogged.value = userCredential.userCredential ? AuthState.LoggedIn : AuthState.LoggedOut;

@@ -3,7 +3,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '@/backend/init';
 
-interface PostEntry extends PostEntryCreateNew {
+export interface PostEntry extends PostEntryCreateNew {
   id: string;
 }
 
