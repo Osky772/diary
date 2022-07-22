@@ -1,5 +1,5 @@
 import {
-  collection, addDoc, getDocs, getDoc, doc as firestoreDoc,
+  collection, addDoc, getDocs, getDoc, doc as firestoreDoc, deleteDoc,
 } from 'firebase/firestore';
 import { db } from '@/backend/init';
 
@@ -17,6 +17,7 @@ export {
   addPost,
   getPosts,
   getSinglePost,
+  deleteSinglePost,
 };
 
 async function addPost(post: PostEntryCreateNew) {
@@ -51,5 +52,13 @@ async function getSinglePost(id: string): Promise<PostEntry | null> {
   } catch (e) {
     console.error('Error getting documents: ', e);
     return null;
+  }
+}
+
+async function deleteSinglePost(id: string) {
+  try {
+    await deleteDoc(firestoreDoc(db, 'posts', id));
+  } catch (e) {
+    console.error('Error deleting document: ', e);
   }
 }
