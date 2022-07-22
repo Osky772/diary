@@ -14,15 +14,28 @@
   </div>
 
   <div class="send-btn-wrapper paper-css paper-css-container">
-    <button @click="handleSendPost">
+    <button @click="isClearModalOpen = true">Wymaż wszystko</button>
+    <button @click="isSendModalOpen = true">
       {{ isLoading ? 'Leci...' : 'Wyślij kartkę'}}
     </button>
+
+    <div class="confirmation-overlay no-style" v-show="isClearModalOpen">
+      <div class="confirmation">
+        <h2>Na pewno chcesz wszystko wymazać?</h2>
+        <button @click="handleClear">Tak</button>
+        <button @click="isClearModalOpen = false">Nie</button>
+      </div>
+    </div>
+
+    <div class="confirmation-overlay no-style" v-show="isSendModalOpen">
+      <div class="confirmation">
+        <h2>Na pewno chcesz wysłać kartkę?</h2>
+        <button @click="handleSendPost">Tak</button>
+        <button @click="isSendModalOpen = false">Nie</button>
+      </div>
+    </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-
-</script>
 
 <script lang="ts">
 // @ts-ignore
@@ -30,7 +43,7 @@ import CKEditor from '@ckeditor/ckeditor5-vue';
 // @ts-ignore
 import Editor from 'ckeditor5-custom-build/build/ckeditor';
 import { addPost } from '@/backend/db';
-import { PropType, ref } from 'vue';
+import { PropType, ref, watch } from 'vue';
 import { User } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 
@@ -50,11 +63,18 @@ export default {
   },
   setup(props: Props) {
     const editor = Editor;
-    const editorData = ref('');
+    const editorData = ref(localStorage.getItem('editorData') || '');
     const isLoading = ref(false);
     const router = useRouter();
+    const isSendModalOpen = ref(false);
+    const isClearModalOpen = ref(false);
+
+    watch(editorData, (newValue) => {
+      localStorage.setItem('editorData', newValue);
+    });
 
     async function handleSendPost() {
+      isSendModalOpen.value = false;
       isLoading.value = true;
       const post = await addPost({
         html: editorData.value,
@@ -71,7 +91,15 @@ export default {
             post: JSON.stringify(post),
           },
         });
+
+        localStorage.removeItem('editorData');
       }
+    }
+
+    function handleClear() {
+      isClearModalOpen.value = false;
+      editorData.value = '';
+      localStorage.removeItem('editorData');
     }
 
     return {
@@ -79,6 +107,9 @@ export default {
       editorData,
       handleSendPost,
       isLoading,
+      handleClear,
+      isSendModalOpen,
+      isClearModalOpen,
     };
   },
 };
@@ -86,6 +117,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/paper-prototype.css";
+@import "../assets/styles";
+
+.add-cart {
+  padding-bottom: 30px;
+}
 
 .editor-container {
   display: grid;

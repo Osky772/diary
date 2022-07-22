@@ -54,28 +54,11 @@ post.value = await getPost();
 
 <style scoped lang="scss">
 @import "../assets/paper-prototype.css";
+@import "../assets/styles";
 
 #single-post#single-post {
   .post-content {
     width: 100%;
-  }
-
-  .confirmation-overlay {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    background: rgba(0, 0, 0, 0.5);
-    transform: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-
-    .confirmation {
-      background: navajowhite;
-    }
   }
 }
 </style>
