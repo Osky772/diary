@@ -20,6 +20,10 @@
   </div>
 </template>
 
+<script lang="ts" setup>
+
+</script>
+
 <script lang="ts">
 // @ts-ignore
 import CKEditor from '@ckeditor/ckeditor5-vue';
@@ -28,6 +32,7 @@ import Editor from 'ckeditor5-custom-build/build/ckeditor';
 import { addPost } from '@/backend/db';
 import { PropType, ref } from 'vue';
 import { User } from 'firebase/auth';
+import { useRouter } from 'vue-router';
 
 interface Props {
   user: User | null;
@@ -47,15 +52,26 @@ export default {
     const editor = Editor;
     const editorData = ref('');
     const isLoading = ref(false);
+    const router = useRouter();
 
     async function handleSendPost() {
       isLoading.value = true;
-      await addPost({
+      const post = await addPost({
         html: editorData.value,
         name: props.user?.displayName ?? '',
         createdAt: new Date(),
       });
       isLoading.value = false;
+
+      if (post) {
+        await router.push({
+          name: 'kartka',
+          params: {
+            id: post.id,
+            post: JSON.stringify(post),
+          },
+        });
+      }
     }
 
     return {

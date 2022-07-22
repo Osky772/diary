@@ -1,5 +1,5 @@
 import {
-  collection, addDoc, getDocs, getDoc, doc as firestoreDoc, deleteDoc,
+  collection, addDoc, getDocs, getDoc, doc as firestoreDoc, deleteDoc, query, orderBy,
 } from 'firebase/firestore';
 import { db } from '@/backend/init';
 
@@ -20,18 +20,25 @@ export {
   deleteSinglePost,
 };
 
-async function addPost(post: PostEntryCreateNew) {
+async function addPost(post: PostEntryCreateNew): Promise<PostEntry | null> {
   try {
     const docRef = await addDoc(collection(db, 'posts'), post);
-    console.log('Document written with ID: ', docRef.id);
+    return {
+      ...post,
+      id: docRef.id,
+    };
   } catch (e) {
     console.error('Error adding document: ', e);
   }
+  return null;
 }
 
 async function getPosts(): Promise<PostEntry[] | null> {
+  const postsRef = collection(db, 'posts');
+
   try {
-    const querySnapshot = await getDocs(collection(db, 'posts'));
+    const q = query(postsRef, orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
