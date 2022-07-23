@@ -92,7 +92,14 @@ function editCurrentPost() {
   if (post.value) {
     localStorage.setItem('editorData', post.value.html);
     isEditModalOpen.value = false;
-    router.push({ name: 'add-post', params: { id: route.params.id } });
+    router.push({
+      name: 'add-post',
+      params: {
+        id: post.value.id,
+        isEdit: 'true',
+        post: JSON.stringify(post.value),
+      },
+    });
   }
 }
 

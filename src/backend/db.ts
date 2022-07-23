@@ -1,11 +1,13 @@
 import {
-  collection, addDoc, getDocs, getDoc, doc as firestoreDoc, deleteDoc, query, orderBy,
+  collection, addDoc, getDocs, getDoc, doc as firestoreDoc, deleteDoc, query, orderBy, updateDoc,
 } from 'firebase/firestore';
 import { db } from '@/backend/init';
 
 export interface PostEntry extends PostEntryCreateNew {
   id: string;
 }
+
+export type PostEntryUpdate = Pick<PostEntry, 'id' | 'html'>
 
 interface PostEntryCreateNew {
   html: string;
@@ -15,6 +17,7 @@ interface PostEntryCreateNew {
 
 export {
   addPost,
+  updatePost,
   getPosts,
   getSinglePost,
   deleteSinglePost,
@@ -27,6 +30,18 @@ async function addPost(post: PostEntryCreateNew): Promise<PostEntry | null> {
       ...post,
       id: docRef.id,
     };
+  } catch (e: any) {
+    throw Error(e);
+  }
+}
+
+async function updatePost(post: PostEntryUpdate): Promise<void> {
+  const postRef = firestoreDoc(db, 'posts', post.id);
+
+  try {
+    await updateDoc(postRef, {
+      html: post.html,
+    });
   } catch (e: any) {
     throw Error(e);
   }

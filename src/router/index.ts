@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import PostsList from '../views/PostsList.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: PostsList,
   },
   {
     path: '/dodaj-kartke',
@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "addcart" */ '../views/AddPost.vue'),
+    component: () => import(/* webpackChunkName: "addcart" */ '../views/EditSinglePost.vue'),
   },
   {
     path: '/kartka/:id',

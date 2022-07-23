@@ -46,11 +46,11 @@
 import CKEditor from '@ckeditor/ckeditor5-vue';
 // @ts-ignore
 import Editor from 'ckeditor5-custom-build/build/ckeditor';
-import { addPost } from '@/backend/db';
+import { addPost, updatePost } from '@/backend/db';
 import { PropType, ref, watch } from 'vue';
 import { User } from 'firebase/auth';
-import { useRouter } from 'vue-router';
-import { MyCustomUploadAdapterPlugin } from '@/views/AddPost.helpers';
+import { useRoute, useRouter } from 'vue-router';
+import { MyCustomUploadAdapterPlugin } from '@/views/EditSinglePost.helpers';
 
 interface Props {
   user: User | null;
@@ -74,6 +74,7 @@ export default {
     };
     const isLoading = ref(false);
     const router = useRouter();
+    const route = useRoute();
     const isSendModalOpen = ref(false);
     const isClearModalOpen = ref(false);
 
@@ -84,6 +85,43 @@ export default {
     async function handleSendPost() {
       isSendModalOpen.value = false;
       isLoading.value = true;
+
+      try {
+        console.log('route.params.isEdit', route.params.isEdit);
+        if (route.params.isEdit) {
+          await handleUpdatePost();
+        } else {
+          await createNewPost();
+        }
+
+        localStorage.removeItem('editorData');
+      } catch (e: any) {
+        window.alert(`Coś poszło nie tak. ${e.message}`);
+      }
+    }
+
+    async function handleUpdatePost() {
+      const post = {
+        ...JSON.parse(route.params.post as string),
+        html: editorData.value,
+      };
+
+      await updatePost({
+        id: post.id,
+        html: post.html,
+      });
+      isLoading.value = false;
+
+      await router.push({
+        name: 'kartka',
+        params: {
+          id: post.id,
+          post: JSON.stringify(post),
+        },
+      });
+    }
+
+    async function createNewPost() {
       const post = await addPost({
         html: editorData.value,
         name: props.user?.displayName ?? '',
@@ -99,8 +137,6 @@ export default {
             post: JSON.stringify(post),
           },
         });
-
-        localStorage.removeItem('editorData');
       }
     }
 
