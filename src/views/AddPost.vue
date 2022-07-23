@@ -5,7 +5,11 @@
 
   <div class="editor-container">
     <div class="editor no-style">
-      <ckeditor :editor="editor" v-model="editorData"></ckeditor>
+      <ckeditor
+        :editor="editor"
+        v-model="editorData"
+        :config="editorConfig"
+      ></ckeditor>
     </div>
 
     <div class="preview paper-css">
@@ -46,6 +50,7 @@ import { addPost } from '@/backend/db';
 import { PropType, ref, watch } from 'vue';
 import { User } from 'firebase/auth';
 import { useRouter } from 'vue-router';
+import { MyCustomUploadAdapterPlugin } from '@/views/AddPost.helpers';
 
 interface Props {
   user: User | null;
@@ -64,6 +69,9 @@ export default {
   setup(props: Props) {
     const editor = Editor;
     const editorData = ref(localStorage.getItem('editorData') || '');
+    const editorConfig = {
+      extraPlugins: [MyCustomUploadAdapterPlugin],
+    };
     const isLoading = ref(false);
     const router = useRouter();
     const isSendModalOpen = ref(false);
@@ -105,6 +113,7 @@ export default {
     return {
       editor,
       editorData,
+      editorConfig,
       handleSendPost,
       isLoading,
       handleClear,

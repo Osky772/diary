@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage, ref } from 'firebase/storage';
 
 const prodConfig = {
   apiKey: 'AIzaSyAO4CN9aOUaASb2X3s9e0EeUMludXWu6P8',
@@ -25,3 +26,5 @@ const firebaseConfig = process.env.NODE_ENV === 'production' ? prodConfig : devC
 export const app = initializeApp(firebaseConfig);
 // Initialize Firestore
 export const db = getFirestore(app);
+// Initialize Firebase Storage
+export const storage = getStorage();
