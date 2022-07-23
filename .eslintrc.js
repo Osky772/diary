@@ -21,6 +21,7 @@ module.exports = {
     'vuejs-accessibility/click-events-have-key-events': 'off',
     'no-shadow': 'off',
     'no-undef': 'off',
+    'no-alert': 'off',
   },
   ignorePatterns: ['ckeditor5'],
   overrides: [

@@ -16,8 +16,9 @@ export class MyUploadAdapter {
   // Starts the upload process.
   upload() {
     return this.loader.file.then(
-      (file) => new Promise((resolve, reject) => {
+      (file) => new Promise((resolve) => {
         const imageRef = ref(storage, `/images/${file.name}`);
+
         handleImageCompress(file).then((compressedFile) => {
           const uploadTask = uploadBytesResumable(imageRef, compressedFile);
           const el = document.createElement('div');
@@ -42,12 +43,15 @@ export class MyUploadAdapter {
               // eslint-disable-next-line default-case
               switch (error.code) {
                 case 'storage/unauthorized':
+                  window.alert('User doesn\'t have permission to access the object');
                   throw Error(" User doesn't have permission to access the object");
 
                 case 'storage/canceled':
+                  window.alert('User canceled the upload');
                   throw Error('User canceled the upload');
 
                 case 'storage/unknown':
+                  window.alert('Unknown error occurred, inspect error.serverResponse');
                   throw Error(
                     'Unknown error occurred, inspect error.serverResponse',
                   );
@@ -86,6 +90,7 @@ async function handleImageCompress(file) {
 
     return compressedFile;
   } catch (error) {
+    window.alert('Error occurred while compressing the image', error);
     console.log(error);
     return file;
   }
