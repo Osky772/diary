@@ -27,10 +27,9 @@ async function addPost(post: PostEntryCreateNew): Promise<PostEntry | null> {
       ...post,
       id: docRef.id,
     };
-  } catch (e) {
-    console.error('Error adding document: ', e);
+  } catch (e: any) {
+    throw Error(e);
   }
-  return null;
 }
 
 async function getPosts(): Promise<PostEntry[] | null> {
@@ -43,9 +42,8 @@ async function getPosts(): Promise<PostEntry[] | null> {
       ...doc.data(),
       id: doc.id,
     }) as PostEntry);
-  } catch (e) {
-    console.error('Error getting documents: ', e);
-    return null;
+  } catch (e: any) {
+    throw Error(e);
   }
 }
 
@@ -56,16 +54,15 @@ async function getSinglePost(id: string): Promise<PostEntry | null> {
       ...docRef.data(),
       id: docRef.id,
     } as PostEntry;
-  } catch (e) {
-    console.error('Error getting documents: ', e);
-    return null;
+  } catch (e: any) {
+    throw Error(e);
   }
 }
 
 async function deleteSinglePost(id: string) {
   try {
     await deleteDoc(firestoreDoc(db, 'posts', id));
-  } catch (e) {
-    console.error('Error deleting document: ', e);
+  } catch (e: any) {
+    throw Error(e);
   }
 }

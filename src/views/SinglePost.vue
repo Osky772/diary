@@ -64,15 +64,20 @@ async function getPost(): Promise<PostEntry | null> {
       return await getSinglePost(route.params.id as string);
     }
   } catch (e) {
-    console.error('Error while fetching single post', e);
+    window.alert(`Error while fetching single post ${e}`);
+    console.error(e);
   }
 
   return null;
 }
 
 async function handleDelete() {
-  await deleteSinglePost(route.params.id as string);
-  await router.push({ name: 'home' });
+  try {
+    await deleteSinglePost(route.params.id as string);
+    await router.push({ name: 'home' });
+  } catch (e: any) {
+    window.alert(`Error while deleting post: ${e?.toString()}`);
+  }
 }
 
 function handleEdit() {
