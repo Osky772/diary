@@ -14,24 +14,24 @@
   </div>
 
   <div class="send-btn-wrapper paper-css paper-css-container">
-    <button @click="isClearModalOpen = true">Wymaż wszystko</button>
     <button @click="isSendModalOpen = true">
       {{ isLoading ? 'Leci...' : 'Wyślij kartkę'}}
     </button>
-
-    <div class="confirmation-overlay no-style" v-show="isClearModalOpen">
-      <div class="confirmation">
-        <h2>Na pewno chcesz wszystko wymazać?</h2>
-        <button @click="handleClear">Tak</button>
-        <button @click="isClearModalOpen = false">Nie</button>
-      </div>
-    </div>
+    <button @click="isClearModalOpen = true">Wymaż wszystko</button>
 
     <div class="confirmation-overlay no-style" v-show="isSendModalOpen">
       <div class="confirmation">
         <h2>Na pewno chcesz wysłać kartkę?</h2>
         <button @click="handleSendPost">Tak</button>
         <button @click="isSendModalOpen = false">Nie</button>
+      </div>
+    </div>
+
+    <div class="confirmation-overlay no-style" v-show="isClearModalOpen">
+      <div class="confirmation">
+        <h2>Na pewno chcesz wszystko wymazać?</h2>
+        <button @click="handleClear">Tak</button>
+        <button @click="isClearModalOpen = false">Nie</button>
       </div>
     </div>
   </div>

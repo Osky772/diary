@@ -1,42 +1,44 @@
 <template>
   <div id="single-post" class="paper-css paper-css-container">
-    <div class="post-content">
-      <p>
-        Dodane przez: {{ post.name }}
-        <br>
-        Dnia: {{ formatDate(post.createdAt) }}
-      </p>
-      <div class="no-style" v-html="post.html"></div>
-    </div>
-
-    <button @click="handleEdit">Edytuj</button>
-    <div class="confirmation-overlay no-style" v-show="isEditModalOpen">
-      <div class="confirmation">
-        <h2>
-          Na pewno chcesz edytować kartkę?
+    <template v-if="post">
+      <div class="post-content">
+        <p>
+          Dodane przez: {{ post.name }}
           <br>
-          Utracisz obecny stan edytora
-        </h2>
-        <button @click="editCurrentPost">Tak</button>
-        <button @click="isEditModalOpen = false">Nie</button>
+          Dnia: {{ formatDate(post.createdAt) }}
+        </p>
+        <div class="no-style" v-html="post.html"></div>
       </div>
-    </div>
 
-    <button @click="isDeleteModalOpen = true">Usuń</button>
-    <div class="confirmation-overlay no-style" v-show="isDeleteModalOpen">
-      <div class="confirmation">
-        <h2>Na pewno chcesz usunąć kartkę?</h2>
-        <button @click="handleDelete">Tak</button>
-        <button @click="isDeleteModalOpen = false">Nie</button>
+      <button @click="handleEdit">Edytuj</button>
+      <div class="confirmation-overlay no-style" v-show="isEditModalOpen">
+        <div class="confirmation">
+          <h2>
+            Na pewno chcesz edytować kartkę?
+            <br>
+            Utracisz obecny stan edytora
+          </h2>
+          <button @click="editCurrentPost">Tak</button>
+          <button @click="isEditModalOpen = false">Nie</button>
+        </div>
       </div>
-    </div>
+
+      <button @click="isDeleteModalOpen = true">Usuń</button>
+      <div class="confirmation-overlay no-style" v-show="isDeleteModalOpen">
+        <div class="confirmation">
+          <h2>Na pewno chcesz usunąć kartkę?</h2>
+          <button @click="handleDelete">Tak</button>
+          <button @click="isDeleteModalOpen = false">Nie</button>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useRoute, useRouter } from 'vue-router';
 import { deleteSinglePost, getSinglePost, PostEntry } from '@/backend/db';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pl';
 
@@ -93,7 +95,9 @@ function isPostLoadedFromParams(params: unknown): params is string {
   return typeof (params as string) === 'string';
 }
 
-post.value = await getPost();
+onMounted(async () => {
+  post.value = await getPost();
+});
 
 </script>
 

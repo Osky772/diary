@@ -12,9 +12,7 @@
       v-html="post.html"
       class="post-list-item"
       @click="handlePostClick(post)"
-    >
-    </div>
-
+    ></div>
   </div>
 </template>
 

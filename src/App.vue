@@ -14,15 +14,15 @@
       </nav>
     </div>
 
-    <Suspense>
-      <router-view :user="user"/>
+<!--    <Suspense>-->
+    <router-view :user="user"/>
 
-      <template #fallback>
-        <div class="paper-css paper-css-container">
-          <h1>Ładuję kartkę...</h1>
-        </div>
-      </template>
-    </Suspense>
+<!--      <template #fallback>-->
+<!--        <div class="paper-css paper-css-container">-->
+<!--          <h1>Ładuję kartkę...</h1>-->
+<!--        </div>-->
+<!--      </template>-->
+<!--    </Suspense>-->
   </div>
 
   <SignIn v-else-if="AuthState.LoggedOut" @onLogged="handleSignIn" />
