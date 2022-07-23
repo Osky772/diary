@@ -1,23 +1,23 @@
 <template>
-  <div v-if="AuthState.OnValidating">
+  <div v-if="userState === AuthState.OnValidating">
     <div class="paper-css paper-css-container">
       <h1>Witam w pamiętniku</h1>
     </div>
   </div>
 
-  <div v-else-if="AuthState.LoggedIn">
+  <div v-if="userState === AuthState.LoggedIn">
     <div class="paper-css paper-css-container">
       <nav class="no-style">
         <router-link to="/">Pamiętnik</router-link>
         <router-link to="/dodaj-kartke">Dodaj kartkę</router-link>
-        <button @click.prevent="handleSignOut">Wyloguj się</button>
+        <button @click="handleSignOut">Wyloguj się</button>
       </nav>
     </div>
 
     <router-view :user="user"/>
   </div>
 
-  <SignIn v-else-if="AuthState.LoggedOut" @onLogged="handleSignIn" />
+  <SignIn v-else-if="userState === AuthState.LoggedOut" @onLogged="handleSignIn" />
 </template>
 
 <script lang="ts" setup>
@@ -37,28 +37,38 @@ enum AuthState {
 }
 
 const auth = getAuth();
-const isUserLogged = ref(AuthState.OnValidating);
+const userState = ref(AuthState.OnValidating);
 const user = ref<User | null>(null);
 
 auth.onAuthStateChanged((firebaseUser) => {
   if (firebaseUser) {
-    isUserLogged.value = AuthState.LoggedIn;
+    userState.value = AuthState.LoggedIn;
     user.value = firebaseUser;
 
     // TODO: update user profile
-    // updateProfile(firebaseUser, {
-    //   displayName: '',
-    // });
+    if (firebaseUser.email?.includes('oskar')) {
+      updateProfile(firebaseUser, {
+        displayName: 'Oskar',
+      });
+    } else {
+      updateProfile(firebaseUser, {
+        displayName: 'Zuzia',
+      });
+    }
+  } else {
+    userState.value = AuthState.LoggedOut;
+    user.value = null;
   }
 });
 
 function handleSignIn(userCredential: any) {
-  isUserLogged.value = userCredential.userCredential ? AuthState.LoggedIn : AuthState.LoggedOut;
+  userState.value = userCredential.userCredential ? AuthState.LoggedIn : AuthState.LoggedOut;
 }
 
-function handleSignOut() {
-  signOut(auth);
-  isUserLogged.value = AuthState.LoggedOut;
+async function handleSignOut() {
+  console.log('handleSignOut');
+  await signOut(auth);
+  userState.value = AuthState.LoggedOut;
 }
 
 </script>
