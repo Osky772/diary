@@ -126,7 +126,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/paper-prototype.css";
-@import "../assets/styles";
 
 .add-cart {
   padding-bottom: 30px;
