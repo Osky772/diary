@@ -141,4 +141,10 @@ export default {
     width: 99%;
   }
 }
+
+@media (max-width: 700px) {
+  .editor-container {
+    display: block;
+  }
+}
 </style>
