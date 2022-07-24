@@ -1,6 +1,14 @@
 <template>
   <div class="paper-css paper-css-container add-cart">
-    <h1>Dodaj kartkę z pamiętnika</h1>
+    <h1 v-if="isEditPost">Edytuj kartkę</h1>
+    <h1 v-else>Dodaj nową kartkę z pamiętnika</h1>
+  </div>
+
+  <div class="paper-css paper-css-container">
+    <label for="eventdate">
+      Wybierz datę wydarzenia
+    </label>
+    <input id="eventdate" type="datetime-local" name="eventdate" v-model="postDate">
   </div>
 
   <div class="editor-container">
@@ -75,19 +83,36 @@ export default {
     const isLoading = ref(false);
     const router = useRouter();
     const route = useRoute();
+    const postDate = ref(getEditPostCreatedAtDate());
     const isSendModalOpen = ref(false);
     const isClearModalOpen = ref(false);
+    const isEditPost = ref(route.params.isEdit === 'true');
 
     watch(editorData, (newValue) => {
       localStorage.setItem('editorData', newValue);
     });
+
+    watch(postDate, (newValue: any) => {
+      if (newValue instanceof Date) {
+        toIsoString(newValue);
+      }
+    });
+
+    function getEditPostCreatedAtDate() {
+      if (typeof route.params.post === 'string') {
+        const editPost = JSON.parse(route.params.post as string);
+
+        return toIsoString(new Date(editPost.createdAt)).substr(0, 16);
+      }
+
+      return toIsoString(new Date()).substr(0, 16);
+    }
 
     async function handleSendPost() {
       isSendModalOpen.value = false;
       isLoading.value = true;
 
       try {
-        console.log('route.params.isEdit', route.params.isEdit);
         if (route.params.isEdit) {
           await handleUpdatePost();
         } else {
@@ -104,11 +129,11 @@ export default {
       const post = {
         ...JSON.parse(route.params.post as string),
         html: editorData.value,
+        createdAt: new Date(postDate.value).toString(),
       };
 
       await updatePost({
-        id: post.id,
-        html: post.html,
+        ...post,
       });
       isLoading.value = false;
 
@@ -125,7 +150,7 @@ export default {
       const post = await addPost({
         html: editorData.value,
         name: props.user?.displayName ?? '',
-        createdAt: new Date().toString(),
+        createdAt: new Date(postDate.value).toString(),
       });
       isLoading.value = false;
 
@@ -138,6 +163,23 @@ export default {
           },
         });
       }
+    }
+
+    function toIsoString(date: Date) {
+      const tzo = -date.getTimezoneOffset();
+      const dif = tzo >= 0 ? '+' : '-';
+      const pad = function (num: number) {
+        return (num < 10 ? '0' : '') + num;
+      };
+
+      return `${date.getFullYear()
+      }-${pad(date.getMonth() + 1)
+      }-${pad(date.getDate())
+      }T${pad(date.getHours())
+      }:${pad(date.getMinutes())
+      }:${pad(date.getSeconds())
+      }${dif}${pad(Math.floor(Math.abs(tzo) / 60))
+      }:${pad(Math.abs(tzo) % 60)}`;
     }
 
     function handleClear() {
@@ -155,6 +197,8 @@ export default {
       handleClear,
       isSendModalOpen,
       isClearModalOpen,
+      isEditPost,
+      postDate,
     };
   },
 };

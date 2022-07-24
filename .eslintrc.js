@@ -22,6 +22,7 @@ module.exports = {
     'no-shadow': 'off',
     'no-undef': 'off',
     'no-alert': 'off',
+    'vuejs-accessibility/label-has-for': 'off',
   },
   ignorePatterns: ['ckeditor5'],
   overrides: [

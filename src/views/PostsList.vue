@@ -7,8 +7,8 @@
     <h1 v-if="isError" style="color: red;">Błąd ładowania :(</h1>
 
     <div
-      :key="id"
-      v-for="(post, id) in posts"
+      :key="post.createdAt + post.html"
+      v-for="(post) in sortedPosts"
       v-html="post.html"
       class="post-list-item"
       @click="handlePostClick(post)"
@@ -20,6 +20,8 @@
 import { useQuery } from 'vue-query';
 import { getPosts, PostEntry } from '@/backend/db';
 import { useRouter } from 'vue-router';
+import dayjs from 'dayjs';
+import { computed, ref, watch } from 'vue';
 
 const router = useRouter();
 
@@ -31,6 +33,11 @@ function usePostsQuery() {
 const {
   isLoading, isError, data: posts,
 } = usePostsQuery();
+
+const sortedPosts = computed(() => {
+  const copy = [...posts.value ?? []];
+  return copy?.sort((a, b) => dayjs(b.createdAt).diff(dayjs(a.createdAt)));
+});
 
 function handlePostClick(post: PostEntry) {
   router.push({

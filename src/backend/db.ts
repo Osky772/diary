@@ -7,7 +7,7 @@ export interface PostEntry extends PostEntryCreateNew {
   id: string;
 }
 
-export type PostEntryUpdate = Pick<PostEntry, 'id' | 'html'>
+export type PostEntryUpdate = Pick<PostEntry, 'id' | 'html' | 'createdAt'>
 
 interface PostEntryCreateNew {
   html: string;
@@ -40,7 +40,7 @@ async function updatePost(post: PostEntryUpdate): Promise<void> {
 
   try {
     await updateDoc(postRef, {
-      html: post.html,
+      ...post,
     });
   } catch (e: any) {
     throw Error(e);
